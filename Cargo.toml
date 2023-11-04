@@ -1,0 +1,17 @@
+[package]
+name = "rank1"
+version = "0.1.0"
+edition = "2021"
+authors = ["Shivam Pandey <pandeyshivam2023robotics+crates@gmail.com>"]
+description = "BLIS in rust: Implements core matrix operations"
+readme = "README.md"
+homepage = "https://github.com/ShivamPR21/rank1"
+repository = "https://github.com/ShivamPR21/rank1.git"
+license = "MIT OR Apache-2.0"
+keywords = []
+categories = ["data-structures"]
+publish = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
