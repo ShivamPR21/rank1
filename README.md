@@ -1,3 +1,111 @@
 # RANK1
 
-## BLIS in rust: Implements core matrix operations
+## BLAS/LAPACK in rust: Implements core matrix operations
+
+### Roadmap
+
+- [ ] Matrix Storage Utilities
+  - [ ] Dense Matrix
+  - [ ] Band Matrix
+  - [ ] _Add More_
+- [ ] Reference Implementation : Bare Minimum
+  - [ ] BLAS Level-1 Operations
+    - [ ] Level-1 vector operations
+      - [ ] addv : `y := y + conjx(x)`
+      - [ ] amaxv : `Given a vector of length n, return the zero-based index index of the element of vector x that contains the largest absolute value (or, in the complex domain, the largest complex modulus).`
+      - [ ] axpyv : `y := y + alpha * conjx(x)`
+      - [ ] axpbyv : `y := beta * y + alpha * conjx(x)`
+      - [ ] copyv : `y := conjx(x)`
+      - [ ] dotv : `rho := conjx(x)^T * conjy(y)`
+      - [ ] dotxv : `rho := beta * rho + alpha * conjx(x)^T * conjy(y)`
+      - [ ] invertv : `Invert all elements of an n-length vector x.`
+      - [ ] invscalv : `x := ( 1.0 / conjalpha(alpha) ) * x`
+      - [ ] scalv : `x := conjalpha(alpha) * x`
+      - [ ] scal2v : `y := alpha * conjx(x)`
+      - [ ] setv : `x := conjalpha(alpha)`
+      - [ ] subv : `y := y - conjx(x)`
+      - [ ] swapv : `Swap corresponding elements of two n-length vectors x and y.`
+      - [ ] xpbyv : `y := beta * y + conjx(x)`
+    - [ ] Level-1 Diagonal Operations
+      - [ ] addd
+      - [ ] axpyd
+      - [ ] copyd
+      - [ ] invertd
+      - [ ] invscald
+      - [ ] scald
+      - [ ] scal2d
+      - [ ] setd
+      - [ ] setid
+      - [ ] shiftd
+      - [ ] subd
+      - [ ] xpbyd
+    - [ ] Level-1 Matrix Operations
+      - [ ] addm : `B := B + transa(A)`
+      - [ ] axpym : `B := B + alpha * transa(A)`
+      - [ ] copym : `B := transa(A)`
+      - [ ] invscalm : `A := ( 1.0 / conjalpha(alpha) ) * A`
+      - [ ] scalm : `A := conjalpha(alpha) * A`
+      - [ ] scal2m : `B := alpha * transa(A)`
+      - [ ] setm : `Set all elements of an m x n matrix A to conjalpha(alpha), where A is stored as a dense matrix, or lower- or upper- triangular/trapezoidal matrix, as specified by uploa, with the diagonal offset of A specified by diagoffa and unit/non-unit nature of the diagonal specified by diaga. If uploa indicates lower or upper storage, only that part of matrix A will be updated.`
+      - [ ] subm : `B := B - transa(A)`
+    - [ ] Level-1 Fused Operations
+      - [ ] axpy2v : `z := y + alphax * conjx(x) + alphay * conjy(y)`
+      - [ ] dotaxpyv : `rho := conjxt(x^T) * conjy(y) & y := y + alpha * conjx(x)`
+      - [ ] axpyf : `y := y + alpha * conja(A) * conjx(x)`
+      - [ ] dotxf : `y := y + alpha * conjat(A^T) * conjx(x)`
+      - [ ] dotxaxpyf : `y := beta * y + alpha * conjat(A^T) * conjw(w) & z := z + alpha * conja(A)    * conjx(x)`
+  - [ ] BLAS Level-2 Operations
+    - [ ] gemv : `y := beta * y + alpha * transa(A) * conjx(x)`
+    - [ ] ger : `A := A + alpha * conjx(x) * conjy(y)^T`
+    - [ ] hemv : `y := beta * y + alpha * conja(A) * conjx(x)`
+    - [ ] her : `A := A + alpha * conjx(x) * conjx(x)^H`
+    - [ ] her2 : `A := A + alpha * conjx(x) * conjy(y)^H + conj(alpha) * conjy(y) * conjx(x)^H`
+    - [ ] symv : `y := beta * y + alpha * conja(A) * conjx(x)`
+    - [ ] syr : `A := A + alpha * conjx(x) * conjx(x)^T`
+    - [ ] syr2 : `A := A + alpha * conjx(x) * conjy(y)^T + conj(alpha) * conjy(y) * conjx(x)^T`
+    - [ ] trmv : `x := alpha * transa(A) * x`
+    - [ ] trsv : `transa(A) * x = alpha * y`
+  - [ ] BLAS Level-3 Operations
+    - [ ] gemm : `C := beta * C + alpha * transa(A) * transb(B)`
+    - [ ] gemmt : `C := beta * C + alpha * transa(A) * transb(B)`
+    - [ ] hemm :
+      - [ ] : `C := beta * C + alpha * conja(A) * transb(B)`
+      - [ ] : `C := beta * C + alpha * transb(B) * conja(A)`
+    - [ ] herk : `C := beta * C + alpha * transa(A) * transa(A)^H`
+    - [ ] herk2 : `C := beta * C + alpha * transa(A) * transb(B)^H + conj(alpha) * transb(B) * transa(A)^H`
+    - [ ] symm :
+      - [ ] : `C := beta * C + alpha * conja(A) * transb(B)`
+      - [ ] : `C := beta * C + alpha * transb(B) * conja(A)`
+    - [ ] syrk : `C := beta * C + alpha * transa(A) * transa(A)^T`
+    - [ ] syr2k : `C := beta * C + alpha * transa(A) * transb(B)^T + alpha * transb(B) * transa(A)^T`
+    - [ ] trmm :
+      - [ ] : `B := alpha * transa(A) * B`
+      - [ ] : `B := alpha * B * transa(A)`
+    - [ ] trmm3 :
+      - [ ] : `C := beta * C + alpha * transa(A) * transb(B)`
+      - [ ] : `C := beta * C + alpha * transb(B) * transa(A)`
+    - [ ] trsm :
+      - [ ] : `transa(A) * X = alpha * B`
+      - [ ] : `X * transa(A) = alpha * B`
+  - [ ] : Utility Operations
+    - [ ] : asumv : `Compute the sum of the absolute values of the fundamental elements of vector x. The resulting sum is stored to asum.`
+    - [ ] : norm[1/f/i]m
+    - [ ] : norm[1/f/i]v
+    - [ ] : mkherm
+    - [ ] : mksymm
+    - [ ] : mktrim
+    - [ ] : fprintv
+    - [ ] : fprintm
+    - [ ] : printm
+    - [ ] : randv
+    - [ ] : randm
+    - [ ] : sumsqv : `scale_new^2 * sumsq_new = x[0]^2 + x[1]^2 + ... x[m-1]^2 + scale_old^2 * sumsq_old`
+    - [ ] : getsc
+    - [ ] : getijv
+    - [ ] : getijm
+    - [ ] : setsc
+    - [ ] : setijv
+    - [ ] : setijm
+    - [ ] : eqsc
+    - [ ] : eqv
+    - [ ] : eqm
