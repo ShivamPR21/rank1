@@ -16,3 +16,4 @@ publish = true
 
 [dependencies]
 cpuid = "*"
+num = "*"
